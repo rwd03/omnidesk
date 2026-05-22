@@ -1,0 +1,63 @@
+# IT Help Desk System Requirements
+
+## 1. Functional Requirements
+
+### Authentication
+- Users can log in.
+- Users can register.
+- The system supports roles: Admin, Employee, IT Support Agent, Manager.
+- Each role has different permissions.
+
+### Ticket Management
+- Employees can create tickets.
+- Employees can view their own tickets.
+- Tickets have a title, description, category, priority, and status.
+- IT agents can update ticket status.
+- IT agents can add comments.
+- Admins can assign tickets to agents.
+
+### Ticket Categories
+- Hardware
+- Software
+- Network
+- Email
+- Access Request
+- Other
+
+### Ticket Priorities
+- Low
+- Medium
+- High
+- Critical
+
+### Ticket Statuses
+- Open
+- In Progress
+- Pending
+- Resolved
+- Closed
+
+### Notifications
+- Users receive notifications when a ticket is updated.
+- Agents receive notifications when assigned a ticket.
+
+### Dashboard and Reports
+- Show number of open tickets.
+- Show number of resolved tickets.
+- Show number of pending tickets.
+- Show tickets by category.
+- Show tickets by priority.
+
+### Admin Panel
+- Admin can manage users.
+- Admin can manage roles.
+- Admin can manage ticket categories.
+
+## 2. Non-Functional Requirements
+
+- The system should be secure.
+- Passwords should be encrypted.
+- The interface should be responsive.
+- The system should support search and filtering.
+- The system should be easy to use.
+- The database should store ticket history.
