@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import TicketList from "./pages/TicketList";
+import CreateTicket from "./pages/CreateTicket";
+import EditTicket from "./pages/EditTicket";
 import "./index.css";
 
 function App() {
@@ -11,6 +14,10 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+
+        <Route path="/tickets" element={<TicketList />} />
+        <Route path="/tickets/edit/:id" element={<EditTicket />} />
+        <Route path="/tickets/create" element={<CreateTicket />} />
       </Routes>
     </BrowserRouter>
   );

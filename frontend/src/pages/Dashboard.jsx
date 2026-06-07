@@ -42,7 +42,15 @@ function Dashboard() {
           </div>
         </div>
 
-        <button onClick={handleLogout}>Logout</button>
+        <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+          <button onClick={() => navigate("/tickets")}>
+            View Tickets
+          </button>
+
+          <button onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   );
