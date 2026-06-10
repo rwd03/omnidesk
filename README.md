@@ -8,9 +8,7 @@ OmniDesk is a full-stack web application designed to manage IT support tickets, 
 
 The system simulates an enterprise IT help desk environment where employees can submit support requests, while IT support agents, managers, and administrators can manage tickets, users, roles, and operational workflows.
 
-This repository currently includes the work completed for Week 1, Week 2, and Week 3 of the project.
-
----
+This repository currently includes the work completed for Week 1, Week 2, Week 3, and Week 4 of the project.
 
 ## Main Features
 
@@ -29,8 +27,6 @@ This repository currently includes the work completed for Week 1, Week 2, and We
 * Ticket statuses
 * Dashboard navigation
 * Frontend connected with backend APIs
-
----
 
 ## Tech Stack
 
@@ -52,17 +48,16 @@ This repository currently includes the work completed for Week 1, Week 2, and We
 ### Database
 
 * SQL Server Express
-* SQL Server Management Studio
+* SQL Server command-line testing using `sqlcmd`
 
 ### Tools
 
 * GitHub
 * Visual Studio Code
 * Postman
+* SQL Server Express
 * Draw.io
 * Figma
-
----
 
 ## Project Structure
 
@@ -119,8 +114,6 @@ omnidesk/
 └── README.md
 ```
 
----
-
 ## Current Status
 
 ## Week 1 — Requirements Analysis and Planning
@@ -134,8 +127,6 @@ Completed:
 * Database schema planning
 * ERD planning
 * Initial documentation
-
----
 
 ## Week 2 — Project Setup, Authentication, and Role Management
 
@@ -163,40 +154,58 @@ Completed:
 * Backend tested using Postman
 * Frontend login tested in browser
 
----
-
-## Week 3 — Ticket Management CRUD Module
+## Week 3 — Frontend and Backend Integration Preparation
 
 Completed:
 
-* Ticket model
-* Category model
-* Priority model
-* Status model
-* Ticket DTOs
-* Ticket database migration
+* Dashboard navigation setup
+* Frontend routing setup
+* Axios configuration
+* Authentication flow connected between frontend and backend
+* Login page connected to backend API
+* Register page connected to backend API
+* JWT token stored in local storage
+* Dashboard displays logged-in user information
+* Initial frontend structure prepared for ticket management pages
+* README and project documentation updated
+
+## Week 4 — Ticket Management System and CRUD Operations
+
+### Objectives
+
+* Build ticket management system
+* Implement CRUD operations
+* Connect frontend with backend APIs
+
+### Completed Tasks
+
+* Created Ticket model
+* Created Category model
+* Created Priority model
+* Created Status model
+* Created ticket DTOs
+* Added ticket database migration
 * Seeded ticket categories
 * Seeded ticket priorities
 * Seeded ticket statuses
-* Ticket creation API
-* Ticket listing API
-* Ticket details API
-* Ticket update API
-* Ticket delete API
-* Categories API
-* Priorities API
-* Statuses API
-* Postman API testing
-* React ticket API service
-* Ticket list page
-* Create ticket page
-* Edit ticket page
-* Delete ticket functionality
-* Dashboard button to access ticket module
-* Back button from ticket list to dashboard
-* Full frontend/backend ticket CRUD flow tested
-
----
+* Implemented ticket creation API
+* Implemented ticket listing API
+* Implemented ticket details API
+* Implemented ticket update API
+* Implemented ticket delete API
+* Implemented Categories API
+* Implemented Priorities API
+* Implemented Statuses API
+* Tested ticket APIs using Postman
+* Created React ticket API service
+* Created ticket list page
+* Created create ticket page
+* Created edit ticket page
+* Implemented delete ticket functionality
+* Added dashboard button to access ticket module
+* Added back button from ticket list to dashboard
+* Connected React frontend with ASP.NET Core backend APIs using Axios
+* Tested full frontend/backend ticket CRUD flow
 
 ## Implemented Roles
 
@@ -211,8 +220,6 @@ The system currently supports four roles:
 
 The roles are seeded into the database using Entity Framework Core migrations.
 
----
-
 ## Ticket Categories
 
 The following ticket categories are seeded into the database:
@@ -226,8 +233,6 @@ The following ticket categories are seeded into the database:
 | 5           | Access Request |
 | 6           | Other          |
 
----
-
 ## Ticket Priorities
 
 The following ticket priorities are seeded into the database:
@@ -238,8 +243,6 @@ The following ticket priorities are seeded into the database:
 | 2           | Medium        |
 | 3           | High          |
 | 4           | Critical      |
-
----
 
 ## Ticket Statuses
 
@@ -252,8 +255,6 @@ The following ticket statuses are seeded into the database:
 | 3         | Pending     |
 | 4         | Resolved    |
 | 5         | Closed      |
-
----
 
 ## Database
 
@@ -286,8 +287,6 @@ Example connection string:
   "DefaultConnection": "Server=localhost\\SQLEXPRESS01;Database=OmniDeskDb;Trusted_Connection=True;TrustServerCertificate=True;"
 }
 ```
-
----
 
 ## Backend API Endpoints
 
@@ -326,8 +325,6 @@ Example response:
 }
 ```
 
----
-
 ### Login User
 
 ```http
@@ -353,8 +350,6 @@ The response includes:
 * Email
 * Role
 
----
-
 ### Authenticated Profile
 
 ```http
@@ -373,8 +368,6 @@ Expected response:
 }
 ```
 
----
-
 ### Admin-Only Route
 
 ```http
@@ -389,8 +382,6 @@ Expected response:
 Admin access granted.
 ```
 
----
-
 ## Ticket Endpoints
 
 All ticket endpoints require a valid JWT Bearer Token.
@@ -403,8 +394,6 @@ GET /api/tickets
 
 Returns all tickets with category, priority, status, creator, and creation date.
 
----
-
 ### Get Ticket by ID
 
 ```http
@@ -412,8 +401,6 @@ GET /api/tickets/{id}
 ```
 
 Returns a single ticket by ID.
-
----
 
 ### Create Ticket
 
@@ -442,8 +429,6 @@ Example response:
 }
 ```
 
----
-
 ### Update Ticket
 
 ```http
@@ -462,8 +447,6 @@ Example request body:
 }
 ```
 
----
-
 ### Delete Ticket
 
 ```http
@@ -471,8 +454,6 @@ DELETE /api/tickets/{id}
 ```
 
 Deletes a ticket by ID.
-
----
 
 ## Lookup Endpoints
 
@@ -494,8 +475,6 @@ GET /api/priorities
 GET /api/statuses
 ```
 
----
-
 ## How to Run the Backend
 
 Open Command Prompt from the project root:
@@ -510,8 +489,6 @@ The backend runs on:
 ```text
 http://localhost:5081
 ```
-
----
 
 ## How to Run the Frontend
 
@@ -528,8 +505,6 @@ The frontend runs on:
 ```text
 http://localhost:5173
 ```
-
----
 
 ## Frontend Pages Implemented
 
@@ -583,8 +558,6 @@ The edit ticket page allows users to update:
 * Priority
 * Status
 
----
-
 ## Authentication Flow
 
 1. User registers with full name, email, password, and role.
@@ -595,8 +568,6 @@ The edit ticket page allows users to update:
 6. Frontend stores the JWT token in local storage.
 7. Protected routes use the token as a Bearer Token.
 8. Role-based authorization controls access to admin-only routes.
-
----
 
 ## Ticket Management Flow
 
@@ -610,11 +581,9 @@ The edit ticket page allows users to update:
 8. The frontend communicates with the ASP.NET Core backend using Axios.
 9. The backend stores and retrieves ticket data from SQL Server.
 
----
-
 ## Testing Completed
 
-Testing was completed using Postman, SQL Server Management Studio, and the browser.
+Testing was completed using Postman, SQL Server `sqlcmd`, and the browser.
 
 Completed tests:
 
@@ -635,14 +604,14 @@ Completed tests:
 * Get tickets API tested
 * Update ticket API tested
 * Delete ticket API tested
+* SQL Server Tickets table verified using `sqlcmd`
+* SQL Server Categories table verified using `sqlcmd`
 * Frontend login tested successfully
 * Dashboard displayed logged-in user name and role
 * Ticket list page tested
 * Create ticket page tested
 * Edit ticket page tested
 * Delete ticket button tested
-
----
 
 ## Screenshots to Include in Documentation
 
@@ -657,17 +626,14 @@ Recommended screenshots:
 * Postman login response with JWT token
 * Postman create ticket response
 * Postman get tickets response
-* SQL Server Roles table
 * SQL Server Tickets table
 * SQL Server Categories table
 * Backend running in terminal
 * Frontend running in terminal
 
----
-
 ## Next Steps
 
-The next phase of development will focus on Week 4 features:
+The next phase of development will focus on workflow features that come after the basic ticket CRUD module:
 
 * Ticket assignment workflow
 * Assign tickets to IT support agents
@@ -678,9 +644,6 @@ The next phase of development will focus on Week 4 features:
 * Assignment history
 * Audit trail for ticket actions
 
----
-
 ## Author
 
 OmniDesk was developed as part of a full-stack web development internship project.
-
