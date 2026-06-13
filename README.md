@@ -25,7 +25,13 @@ This repository currently includes the work completed for Week 1, Week 2, Week 3
 * Ticket categories
 * Ticket priorities
 * Ticket statuses
+* Ticket assignment to IT support agents
+* Ticket status workflow updates
+* Ticket comments and replies
+* Ticket activity history tracking
+* Activity logs for ticket actions
 * Dashboard navigation
+* Ticket details page
 * Frontend connected with backend APIs
 
 ## Tech Stack
@@ -75,7 +81,8 @@ omnidesk/
 │   │   │   ├── Dashboard.jsx
 │   │   │   ├── TicketList.jsx
 │   │   │   ├── CreateTicket.jsx
-│   │   │   └── EditTicket.jsx
+│   │   │   ├── EditTicket.jsx
+│   │   │   └── TicketDetails.jsx
 │   │   ├── App.jsx
 │   │   ├── main.jsx
 │   │   └── index.css
@@ -97,14 +104,19 @@ omnidesk/
 │       │   └── Tickets/
 │       │       ├── CreateTicketDto.cs
 │       │       ├── UpdateTicketDto.cs
-│       │       └── TicketResponseDto.cs
+│       │       ├── TicketResponseDto.cs
+│       │       ├── AssignTicketDto.cs
+│       │       ├── UpdateTicketStatusDto.cs
+│       │       └── CreateTicketCommentDto.cs
 │       ├── Models/
 │       │   ├── User.cs
 │       │   ├── Role.cs
 │       │   ├── Ticket.cs
 │       │   ├── Category.cs
 │       │   ├── Priority.cs
-│       │   └── Status.cs
+│       │   ├── Status.cs
+│       │   ├── TicketComment.cs
+│       │   └── ActivityLog.cs
 │       ├── Migrations/
 │       ├── Program.cs
 │       └── appsettings.json
@@ -154,22 +166,7 @@ Completed:
 * Backend tested using Postman
 * Frontend login tested in browser
 
-## Week 3 — Frontend and Backend Integration Preparation
-
-Completed:
-
-* Dashboard navigation setup
-* Frontend routing setup
-* Axios configuration
-* Authentication flow connected between frontend and backend
-* Login page connected to backend API
-* Register page connected to backend API
-* JWT token stored in local storage
-* Dashboard displays logged-in user information
-* Initial frontend structure prepared for ticket management pages
-* README and project documentation updated
-
-## Week 4 — Ticket Management System and CRUD Operations
+## Week 3 — Ticket Management System and CRUD Operations
 
 ### Objectives
 
@@ -206,6 +203,39 @@ Completed:
 * Added back button from ticket list to dashboard
 * Connected React frontend with ASP.NET Core backend APIs using Axios
 * Tested full frontend/backend ticket CRUD flow
+
+## Week 4 — Ticket Assignment, Workflow, Comments, and Activity Logs
+
+### Objectives
+
+* Build ticket assignment system
+* Add ticket workflow logic
+* Implement comments and history tracking
+
+### Completed Tasks
+
+* Added ticket assignment functionality
+* Added `AssignedToUserId` to the Ticket model
+* Created `TicketComment` model
+* Created `ActivityLog` model
+* Added database migration for assignment, comments, and activity logs
+* Created ticket assignment API endpoint
+* Created ticket status update API endpoint
+* Created add comment/reply API endpoint
+* Created get comments API endpoint
+* Created get ticket history API endpoint
+* Added activity logs for ticket assignment
+* Added activity logs for ticket status updates
+* Added activity logs for new comments
+* Updated React ticket API service with Week 4 endpoints
+* Created Ticket Details page
+* Added View Details button in the ticket list page
+* Added ticket assignment section in frontend
+* Added status update section in frontend
+* Added comments section in frontend
+* Added activity history section in frontend
+* Tested assignment, status update, comments, and history using Postman
+* Tested full Week 4 frontend/backend workflow in browser
 
 ## Implemented Roles
 
@@ -272,6 +302,8 @@ Current tables:
 * Categories
 * Priorities
 * Statuses
+* TicketComments
+* ActivityLogs
 * __EFMigrationsHistory
 
 The database connection is configured in:
@@ -382,7 +414,7 @@ Expected response:
 Admin access granted.
 ```
 
-## Ticket Endpoints
+## Ticket CRUD Endpoints
 
 All ticket endpoints require a valid JWT Bearer Token.
 
@@ -454,6 +486,150 @@ DELETE /api/tickets/{id}
 ```
 
 Deletes a ticket by ID.
+
+## Week 4 Workflow Endpoints
+
+### Assign Ticket to Agent
+
+```http
+PUT /api/tickets/{id}/assign
+```
+
+Assigns a ticket to an IT Support Agent.
+
+Example request body:
+
+```json
+{
+  "assignedToUserId": 2
+}
+```
+
+Example response:
+
+```json
+{
+  "message": "Ticket assigned successfully.",
+  "ticketId": 3,
+  "assignedToUserId": 2,
+  "assignedTo": "Support Agent"
+}
+```
+
+### Update Ticket Status
+
+```http
+PUT /api/tickets/{id}/status
+```
+
+Updates the status of a ticket and creates an activity log.
+
+Example request body:
+
+```json
+{
+  "statusId": 2
+}
+```
+
+Example response:
+
+```json
+{
+  "message": "Ticket status updated successfully.",
+  "ticketId": 3,
+  "oldStatus": "Open",
+  "newStatus": "In Progress"
+}
+```
+
+### Add Ticket Comment
+
+```http
+POST /api/tickets/{id}/comments
+```
+
+Adds a comment or reply to a ticket and creates an activity log.
+
+Example request body:
+
+```json
+{
+  "message": "I checked the ticket and started troubleshooting the issue."
+}
+```
+
+Example response:
+
+```json
+{
+  "message": "Comment added successfully.",
+  "ticketId": 3,
+  "commentId": 1,
+  "comment": "I checked the ticket and started troubleshooting the issue."
+}
+```
+
+### Get Ticket Comments
+
+```http
+GET /api/tickets/{id}/comments
+```
+
+Returns all comments for a ticket.
+
+Example response:
+
+```json
+[
+  {
+    "id": 1,
+    "ticketId": 3,
+    "commentedBy": "Admin User",
+    "message": "I checked the ticket and started troubleshooting the issue.",
+    "createdAt": "2026-06-13T20:34:20.6166884"
+  }
+]
+```
+
+### Get Ticket Activity History
+
+```http
+GET /api/tickets/{id}/history
+```
+
+Returns the activity history of a ticket.
+
+Example response:
+
+```json
+[
+  {
+    "id": 1,
+    "ticketId": 3,
+    "performedBy": "Admin User",
+    "action": "Ticket Assigned",
+    "description": "Ticket assigned to Support Agent.",
+    "createdAt": "2026-06-13T20:29:37.525522"
+  },
+  {
+    "id": 2,
+    "ticketId": 3,
+    "performedBy": "Admin User",
+    "action": "Status Updated",
+    "description": "Ticket status changed from Open to In Progress.",
+    "createdAt": "2026-06-13T20:32:22.8969668"
+  },
+  {
+    "id": 3,
+    "ticketId": 3,
+    "performedBy": "Admin User",
+    "action": "Comment Added",
+    "description": "A new comment was added to the ticket.",
+    "createdAt": "2026-06-13T20:34:20.6179466"
+  }
+]
+```
 
 ## Lookup Endpoints
 
@@ -536,6 +712,7 @@ The ticket list page displays all created tickets with:
 * Status
 * Created by
 * Created date
+* View details action
 * Edit action
 * Delete action
 
@@ -558,6 +735,17 @@ The edit ticket page allows users to update:
 * Priority
 * Status
 
+### Ticket Details Page
+
+The ticket details page allows users to:
+
+* View ticket information
+* Assign the ticket to an IT Support Agent
+* Update ticket status
+* Add comments or replies
+* View all ticket comments
+* View activity history for the ticket
+
 ## Authentication Flow
 
 1. User registers with full name, email, password, and role.
@@ -578,8 +766,29 @@ The edit ticket page allows users to update:
 5. User can create a new ticket.
 6. User can edit ticket details and status.
 7. User can delete a ticket.
-8. The frontend communicates with the ASP.NET Core backend using Axios.
-9. The backend stores and retrieves ticket data from SQL Server.
+8. User can open the ticket details page.
+9. User can assign a ticket to an IT Support Agent.
+10. User can update ticket status.
+11. User can add comments or replies.
+12. User can view ticket activity history.
+13. The frontend communicates with the ASP.NET Core backend using Axios.
+14. The backend stores and retrieves ticket data from SQL Server.
+
+## Activity Logs Implemented
+
+The system now creates activity logs for:
+
+* Ticket assignment
+* Ticket status updates
+* New ticket comments
+
+Each activity log stores:
+
+* Ticket ID
+* User who performed the action
+* Action name
+* Action description
+* Creation date
 
 ## Testing Completed
 
@@ -604,14 +813,26 @@ Completed tests:
 * Get tickets API tested
 * Update ticket API tested
 * Delete ticket API tested
+* Assign ticket API tested
+* Update ticket status API tested
+* Add ticket comment API tested
+* Get ticket comments API tested
+* Get ticket history API tested
 * SQL Server Tickets table verified using `sqlcmd`
 * SQL Server Categories table verified using `sqlcmd`
+* SQL Server TicketComments table verified using `sqlcmd`
+* SQL Server ActivityLogs table verified using `sqlcmd`
 * Frontend login tested successfully
 * Dashboard displayed logged-in user name and role
 * Ticket list page tested
 * Create ticket page tested
 * Edit ticket page tested
 * Delete ticket button tested
+* Ticket details page tested in browser
+* Frontend assignment flow tested
+* Frontend status update flow tested
+* Frontend comments flow tested
+* Frontend activity history display tested
 
 ## Screenshots to Include in Documentation
 
@@ -623,26 +844,33 @@ Recommended screenshots:
 * Ticket list page
 * Create ticket page
 * Edit ticket page
+* Ticket details page
+* Assign ticket section
+* Status update section
+* Comments section
+* Activity history section
 * Postman login response with JWT token
-* Postman create ticket response
-* Postman get tickets response
+* Postman assign ticket response
+* Postman update status response
+* Postman add comment response
+* Postman get comments response
+* Postman get history response
 * SQL Server Tickets table
 * SQL Server Categories table
+* SQL Server TicketComments table
+* SQL Server ActivityLogs table
 * Backend running in terminal
 * Frontend running in terminal
 
 ## Next Steps
 
-The next phase of development will focus on workflow features that come after the basic ticket CRUD module:
+The next phase of development will focus on:
 
-* Ticket assignment workflow
-* Assign tickets to IT support agents
-* Reassign tickets
-* Ticket comments
-* Internal notes
-* Ticket status workflow improvements
-* Assignment history
-* Audit trail for ticket actions
+* Notifications
+* File uploads
+* Dashboard analytics
+* Reports and charts
+* Export functionality
 
 ## Author
 
