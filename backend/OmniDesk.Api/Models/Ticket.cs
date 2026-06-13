@@ -22,6 +22,9 @@ namespace OmniDesk.Api.Models
         public int CreatedByUserId { get; set; }
         public User? CreatedByUser { get; set; }
 
+        public int? AssignedToUserId { get; set; }
+        public User? AssignedToUser { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? UpdatedAt { get; set; }

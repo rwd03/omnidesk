@@ -43,3 +43,37 @@ export const getPriorities = () => {
 export const getStatuses = () => {
   return axios.get(`${API_URL}/statuses`, getAuthHeader());
 };
+
+// Week 4 APIs
+
+export const assignTicket = (id, assignedToUserId) => {
+  return axios.put(
+    `${API_URL}/tickets/${id}/assign`,
+    { assignedToUserId },
+    getAuthHeader()
+  );
+};
+
+export const updateTicketStatus = (id, statusId) => {
+  return axios.put(
+    `${API_URL}/tickets/${id}/status`,
+    { statusId },
+    getAuthHeader()
+  );
+};
+
+export const addTicketComment = (id, message) => {
+  return axios.post(
+    `${API_URL}/tickets/${id}/comments`,
+    { message },
+    getAuthHeader()
+  );
+};
+
+export const getTicketComments = (id) => {
+  return axios.get(`${API_URL}/tickets/${id}/comments`, getAuthHeader());
+};
+
+export const getTicketHistory = (id) => {
+  return axios.get(`${API_URL}/tickets/${id}/history`, getAuthHeader());
+};

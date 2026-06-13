@@ -44,6 +44,7 @@ builder.Services.AddAuthentication(options =>
 // Role-based authorization
 builder.Services.AddAuthorization();
 
+// CORS for React frontend
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
@@ -61,7 +62,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+// IMPORTANT: removed app.UseHttpsRedirection() for local HTTP testing
 
 app.UseCors("AllowReactApp");
 

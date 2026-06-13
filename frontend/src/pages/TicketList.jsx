@@ -105,8 +105,12 @@ function TicketList() {
                   <td>{ticket.createdBy}</td>
                   <td>{new Date(ticket.createdAt).toLocaleDateString()}</td>
                   <td>
+                    <Link to={`/tickets/${ticket.id}`}>
+                      <button>View Details</button>
+                    </Link>
+
                     <Link to={`/tickets/edit/${ticket.id}`}>
-                      <button>Edit</button>
+                      <button style={{ marginLeft: "8px" }}>Edit</button>
                     </Link>
 
                     <button
