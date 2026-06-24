@@ -27,7 +27,24 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto request)
     {
-        var emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email);
+        if (string.IsNullOrWhiteSpace(request.FullName))
+        {
+            return BadRequest("Full name is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(request.Email))
+        {
+            return BadRequest("Email is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(request.Password))
+        {
+            return BadRequest("Password is required.");
+        }
+
+        var normalizedEmail = request.Email.Trim().ToLower();
+
+        var emailExists = await _context.Users.AnyAsync(u => u.Email.ToLower() == normalizedEmail);
 
         if (emailExists)
         {
@@ -43,8 +60,8 @@ public class AuthController : ControllerBase
 
         var user = new User
         {
-            FullName = request.FullName,
-            Email = request.Email,
+            FullName = request.FullName.Trim(),
+            Email = normalizedEmail,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
             RoleId = request.RoleId
         };
@@ -57,10 +74,10 @@ public class AuthController : ControllerBase
             message = "User registered successfully.",
             user = new
             {
-                user.Id,
-                user.FullName,
-                user.Email,
-                Role = role.Name
+                id = user.Id,
+                fullName = user.FullName,
+                email = user.Email,
+                role = role.Name
             }
         });
     }
@@ -68,11 +85,18 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto request)
     {
+        if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
+        {
+            return BadRequest("Email and password are required.");
+        }
+
+        var normalizedEmail = request.Email.Trim().ToLower();
+
         var user = await _context.Users
             .Include(u => u.Role)
-            .FirstOrDefaultAsync(u => u.Email == request.Email);
+            .FirstOrDefaultAsync(u => u.Email.ToLower() == normalizedEmail);
 
-        if (user == null)
+        if (user == null || user.Role == null)
         {
             return Unauthorized("Invalid email or password.");
         }
@@ -91,10 +115,10 @@ public class AuthController : ControllerBase
             token,
             user = new
             {
-                user.Id,
-                user.FullName,
-                user.Email,
-                Role = user.Role.Name
+                id = user.Id,
+                fullName = user.FullName,
+                email = user.Email,
+                role = user.Role.Name
             }
         });
     }
@@ -106,6 +130,8 @@ public class AuthController : ControllerBase
         return Ok(new
         {
             message = "You are authenticated.",
+            id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+            fullName = User.FindFirst(ClaimTypes.Name)?.Value,
             email = User.FindFirst(ClaimTypes.Email)?.Value,
             role = User.FindFirst(ClaimTypes.Role)?.Value
         });
@@ -124,7 +150,17 @@ public class AuthController : ControllerBase
         var jwtIssuer = _configuration["Jwt:Issuer"];
         var jwtAudience = _configuration["Jwt:Audience"];
 
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!));
+        if (string.IsNullOrWhiteSpace(jwtKey))
+        {
+            throw new InvalidOperationException("JWT key is missing from configuration.");
+        }
+
+        if (user.Role == null)
+        {
+            throw new InvalidOperationException("User role is missing.");
+        }
+
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>
@@ -132,7 +168,8 @@ public class AuthController : ControllerBase
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.FullName),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role.Name)
+            new Claim(ClaimTypes.Role, user.Role.Name),
+            new Claim("role", user.Role.Name)
         };
 
         var token = new JwtSecurityToken(

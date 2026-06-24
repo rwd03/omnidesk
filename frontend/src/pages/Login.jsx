@@ -1,6 +1,16 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import {
+  Alert,
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+
 import api from "../api/axios";
+import AuthLayout from "../components/auth/AuthLayout";
 
 function Login() {
   const navigate = useNavigate();
@@ -11,6 +21,7 @@ function Login() {
   });
 
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setForm({
@@ -22,9 +33,13 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSubmitting(true);
 
     try {
-      const response = await api.post("/auth/login", form);
+      const response = await api.post("/auth/login", {
+        email: form.email.trim(),
+        password: form.password.trim(),
+      });
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
@@ -32,43 +47,95 @@ function Login() {
       navigate("/dashboard");
     } catch (err) {
       setError("Invalid email or password.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <div className="page">
-      <div className="card">
-        <h1>OmniDesk Login</h1>
+    <AuthLayout
+      title="Welcome back"
+      subtitle="Sign in to manage IT support tickets and workflows."
+    >
+      <Box component="form" onSubmit={handleSubmit}>
+        <Stack spacing={2.5}>
+          {error && (
+            <Alert severity="error" sx={{ borderRadius: 3 }}>
+              {error}
+            </Alert>
+          )}
 
-        <form onSubmit={handleSubmit}>
-          <label>Email</label>
-          <input
+          <TextField
+            fullWidth
+            required
+            label="Email"
             name="email"
             type="email"
             value={form.email}
             onChange={handleChange}
-            required
+            placeholder="name@example.com"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 3,
+              },
+            }}
           />
 
-          <label>Password</label>
-          <input
+          <TextField
+            fullWidth
+            required
+            label="Password"
             name="password"
             type="password"
             value={form.password}
             onChange={handleChange}
-            required
+            placeholder="Enter your password"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 3,
+              },
+            }}
           />
 
-          {error && <p className="error">{error}</p>}
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={submitting}
+            sx={{
+              bgcolor: "#111111",
+              color: "#FFFFFF",
+              borderRadius: 2,
+              py: 1.3,
+              textTransform: "none",
+              fontWeight: 800,
+              "&:hover": {
+                bgcolor: "#2A2A2A",
+              },
+            }}
+          >
+            {submitting ? "Signing in..." : "Login"}
+          </Button>
 
-          <button type="submit">Login</button>
-        </form>
-
-        <p>
-          No account? <Link to="/register">Register</Link>
-        </p>
-      </div>
-    </div>
+          <Typography variant="body2" sx={{ color: "#6B7280", textAlign: "center" }}>
+            No account?{" "}
+            <Box
+              component={Link}
+              to="/register"
+              sx={{
+                color: "#111111",
+                fontWeight: 800,
+                textDecoration: "none",
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+            >
+              Register
+            </Box>
+          </Typography>
+        </Stack>
+      </Box>
+    </AuthLayout>
   );
 }
 
