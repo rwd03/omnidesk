@@ -40,6 +40,18 @@ function Sidebar() {
       badge: "N",
       roles: ["Admin", "IT Support Agent", "Manager", "Employee"],
     },
+    {
+      label: "Reports",
+      path: "/reports",
+      badge: "R",
+      roles: ["Admin", "IT Support Agent", "Manager", "Employee"],
+    },
+    {
+      label: "AI Assistant",
+      path: "/ai-assistant",
+      badge: "A",
+      roles: ["Admin", "IT Support Agent", "Manager", "Employee"],
+    },
   ];
 
   const visibleMenuItems = menuItems.filter((item) =>

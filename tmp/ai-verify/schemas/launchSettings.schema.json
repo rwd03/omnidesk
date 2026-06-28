@@ -1,0 +1,53 @@
+{
+  "$id": "https://omnidesk.local/schemas/launchSettings.schema.json",
+  "title": "OmniDesk launch settings",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "profiles": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "commandName": {
+            "type": "string"
+          },
+          "dotnetRunMessages": {
+            "type": "boolean"
+          },
+          "launchBrowser": {
+            "type": "boolean"
+          },
+          "applicationUrl": {
+            "type": "string"
+          },
+          "launchUrl": {
+            "type": "string"
+          },
+          "commandLineArgs": {
+            "type": "string"
+          },
+          "workingDirectory": {
+            "type": "string"
+          },
+          "environmentVariables": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "commandName"
+        ],
+        "additionalProperties": true
+      }
+    }
+  },
+  "required": [
+    "profiles"
+  ],
+  "additionalProperties": true
+}

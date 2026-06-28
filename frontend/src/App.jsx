@@ -8,6 +8,8 @@ import CreateTicket from "./pages/CreateTicket";
 import EditTicket from "./pages/EditTicket";
 import TicketDetails from "./pages/TicketDetails";
 import Notifications from "./pages/Notifications";
+import Reports from "./pages/Reports";
+import AiAssistant from "./pages/AiAssistant";
 
 import "./index.css";
 
@@ -15,13 +17,13 @@ function ProtectedRoute({ children, allowedRoles }) {
   const token = localStorage.getItem("token");
   const storedUser = localStorage.getItem("user");
 
-  let user = null;
-
-  try {
-    user = storedUser ? JSON.parse(storedUser) : null;
-  } catch {
-    user = null;
-  }
+  const user = (() => {
+    try {
+      return storedUser ? JSON.parse(storedUser) : null;
+    } catch {
+      return null;
+    }
+  })();
 
   if (!token || !user) {
     return <Navigate to="/" replace />;
@@ -95,6 +97,24 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={allRoles}>
               <Notifications />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute allowedRoles={allRoles}>
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/ai-assistant"
+          element={
+            <ProtectedRoute allowedRoles={allRoles}>
+              <AiAssistant />
             </ProtectedRoute>
           }
         />
